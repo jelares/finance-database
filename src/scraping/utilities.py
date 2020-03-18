@@ -4,18 +4,35 @@ import sqlite3
 Utilities file to insert a certain stock into the stocks database
 '''
 
-conn = sqlite3.connect("../database/stocksInfo.db")
-c = conn.cursor()
+
+def create_table(table_name):
+    conn = sqlite3.connect("../database/stocksInfo.db")
+    c = conn.cursor()
+
+    create_info = (
+            "CREATE TABLE IF NOT EXISTS " + table_name +
+            "(company TEXT, date_stamp TEXT, stock_price REAL, "
+            "market_capitalization REAL)"
+    )
+
+    c.execute(create_info)
+
+    c.close()
+    conn.close()
 
 
-def create_table():
-    c.execute("CREATE TABLE IF NOT EXISTS stocks(company TEXT, dateStamp "
-              "TEXT, stock_price REAL, market_capitalization REAL")
+def data_entry(table_name, company, date_stamp, stock_price,
+               market_capitalization):
+    conn = sqlite3.connect("../database/stocksInfo.db")
+    c = conn.cursor()
 
+    stock_info = (
+            "INSERT INTO " + table_name + " VALUES('" + company + "', '" +
+            date_stamp + "', " + str(stock_price) + ", " +
+            str(market_capitalization) + ")"
+    )
 
-def data_entry(company, dateStamp, stock_price, market_capitalization):
-    c.execute("INSERT INTO goldmanSachs VALUES('", company, "', '", dateStamp,
-              "', ", str(stock_price), ", ", str(market_capitalization), ")")
+    c.execute(stock_info)
     c.close()
     conn.close()
 

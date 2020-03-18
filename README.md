@@ -4,6 +4,7 @@ information.
    
 #### To Run:
 Requires python 3.8.1  
+DB Browser for SQLite recommended to read the database  
 Create a virtual environment in the finance-database directory and run:
     
     pip install -r requirements.txt
