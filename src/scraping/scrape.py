@@ -3,7 +3,7 @@ import requests
 import csv
 
 stock_information = {}
-csv_file = open('tech_companies.csv', 'w')
+csv_file = open('data/tech_companies.csv', 'w')
 
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['Symbol', 'Company', 'Price', 'change', 'Percent Change', 'Market Cap'])
