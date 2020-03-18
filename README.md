@@ -1,7 +1,13 @@
-# Finance-Database
-This python module is an example of a data scraper. It takes all the tech company stocks available from Yahoo Finance
-and puts them into a CSV as well as loading them into memory.
-
-To run the scraper run:
+# Finance Database
+Contains utility methods for creating a historical database of financial 
+information. 
+   
+#### To Run:
+Requires python 3.8.1  
+Create a virtual environment in the finance-database directory and run:
     
-    python scrapy.py 
+    pip install -r requirements.txt
+
+#### Collaborators:
+Jesus Lares - sidereal  
+Enrique Avina - rickyAvina
