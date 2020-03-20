@@ -24,14 +24,9 @@ util.data_entry(table_name, curr_vals, columns, DATABASE_URL, True)
 curr_vals = ["Goldman", "3-21-2020", "51", "509"]
 util.data_entry(table_name, curr_vals, columns, DATABASE_URL, True)
 
-
-
+# Example for how to query and plot
 data = util.data_query(table_name, "Goldman", DATABASE_URL, [None, "3-21-2020"], True)
-# print(data)
 
 dates = [row[1] for row in data]
 stock_prices = [row[2] for row in data]
-
-print(dates)
-print(stock_prices)
 util.create_scatterplot("Goldman", dates, stock_prices)
