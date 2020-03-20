@@ -28,7 +28,7 @@ class Scraper:
         """
         Get stock data from Yahoo for a company with symbol `symbol` between a time `interv
         @param symbol: The stock ticker for a given company
-        @param interval: A tuple or array of date values in the format 'm-d-Y'
+        @param interval: A tuple or array of date values in the format 'm-d-Y'. If None is provided, will
         @param debug: A boolean flag whether to print debug statements or not
         @return: An array of dictionaries representing rows of data. Ex:
             [{'date': 'Mar 19, 2020', 'open': '137.38', 'high': '152.49', 'low': '130.85', 'close': '149.49', 'adj_close': '149.49', 'volume': '6,543,800'},
@@ -69,17 +69,18 @@ class Scraper:
             for stock in stocks:
                 stock_data_soup = stock.find_all('span')
 
-                stock_data.append({"date": stock_data_soup[0].text,
-                                   "open": stock_data_soup[1].text,
-                                   "high": stock_data_soup[2].text,
-                                   "low": stock_data_soup[3].text,
-                                   "close": stock_data_soup[4].text,
-                                   "adj_close": stock_data_soup[5].text,
-                                   "volume": stock_data_soup[6].text
-                                   })
+                if len(stock_data_soup) > 2:  # want to exclude "Dividend" entries
+                    stock_data.append({"date": stock_data_soup[0].text,
+                                       "open": stock_data_soup[1].text,
+                                       "high": stock_data_soup[2].text,
+                                       "low": stock_data_soup[3].text,
+                                       "close": stock_data_soup[4].text,
+                                       "adj_close": stock_data_soup[5].text,
+                                       "volume": stock_data_soup[6].text
+                                       })
 
         return stock_data
 
 
-data = Scraper.scrape("GS", ["3-10-2020", "3-20-2020"], True)
+data = Scraper.scrape("GS", ["2-17-2019", "3-20-2020"], True)
 print(data)
