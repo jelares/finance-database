@@ -1,5 +1,6 @@
 # import databaseManager.Utilities as util
 import Utilities as util
+# import scrapeADT as scrape
 
 '''
 Test File for Utility functions
