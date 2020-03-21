@@ -1,9 +1,5 @@
 # import databaseManager.Utilities as util
-<<<<<<< HEAD
 import databaseManager.Utilities as util
-=======
-import Utilities as util
->>>>>>> 435f436e277e5a5439f3c7d1266ede8e1cd04730
 # import scrapeADT as scrape
 
 '''
