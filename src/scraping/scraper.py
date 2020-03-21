@@ -1,7 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 import datetime
+<<<<<<< HEAD
 import databaseManager.Utilities as util
+=======
+
+>>>>>>> 435f436e277e5a5439f3c7d1266ede8e1cd04730
 
 class Scraper:
     """
@@ -26,7 +30,11 @@ class Scraper:
     @staticmethod
     def scrape(symbol, interval=None, debug=False):
         """
+<<<<<<< HEAD
         Get stock data from Yahoo for a company with symbol `symbol` between a time `interval`
+=======
+        Get stock data from Yahoo for a company with symbol `symbol` between a time `interv
+>>>>>>> 435f436e277e5a5439f3c7d1266ede8e1cd04730
         @param symbol: The stock ticker for a given company
         @param interval: A tuple or array of date values in the format 'm-d-Y'. If None is provided, will
         @param debug: A boolean flag whether to print debug statements or not
@@ -81,6 +89,7 @@ class Scraper:
 
         return stock_data
 
+<<<<<<< HEAD
     @staticmethod
     def update_symbol(symbol, interval, database_path, table_name, debug=False):
         """
@@ -140,3 +149,8 @@ data = Scraper.scrape("GS", ["2-17-2005", "3-20-2020"], True)
 print(data)
 
 # Scraper.update_symbol("GS", ["2-17-2005", "3-20-2020"], DATABASE_URL, "test_scraper_GS_01", False)
+=======
+
+data = Scraper.scrape("GS", ["2-17-2019", "3-20-2020"], True)
+print(data)
+>>>>>>> 435f436e277e5a5439f3c7d1266ede8e1cd04730
