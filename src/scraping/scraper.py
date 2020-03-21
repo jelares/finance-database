@@ -140,7 +140,4 @@ DATABASE_URL = "../../database/stocksInfo.db"
 # data = Scraper.scrape("GS", ["2-17-2005", "3-20-2020"], True)
 # print(data)
 
-# Scraper.update_symbol("GS", ["2-17-2005", "3-20-2020"], DATABASE_URL, "test_scraper_GS_01", False)
-
-data = Scraper.scrape("GS", ["2-17-2019", "3-20-2020"], True)
-print(data)
+Scraper.update_symbol("GS", ["2-17-2005", "3-20-2020"], DATABASE_URL, "test_scraper_GS_01", False)
