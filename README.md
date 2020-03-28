@@ -9,6 +9,7 @@ Create a virtual environment in the finance-database directory and run:
     
     pip install -r requirements.txt
 
+Check out src/examples.py for usage
 #### Collaborators:
 Jesus Lares - sidereal  
-Enrique Avina - rickyAvina
+Enrique Avina - RickyAvina

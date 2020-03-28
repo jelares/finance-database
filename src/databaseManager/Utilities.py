@@ -1,5 +1,6 @@
 import sqlite3
 import matplotlib.pyplot as plt
+import numpy as npy
 
 '''
 Utilities file to interface with the database specified by its relative path
@@ -63,7 +64,6 @@ def data_entry(table_name, values, table_data, database_path, debug=False):
 
     entry_info = entry_info[:-2] + ") VALUES("
 
-
     for i in range(len(values)):
         val = values[i]
         val_type = table_data[i][1]
@@ -123,19 +123,41 @@ def data_query(table_name, company, database_path, date_range=None, debug=False)
     return ret_data
 
 
-def create_scatterplot(company, dates, y_values):
+def create_plot(company, stock_data):
     """
     Create a scatter plot plotting `dates` against `y_values`
 
     @param company: The name of the company to plot
-    @param dates: An array of date strings in the format 'm-d-YYYY'
-            ex: ['3-20-2020', '3-21-2020']
-    @param y_values: An array of values to plot
+    @param stock_data: An array of dictionary values to plot
     """
 
-    # plot
-    plt.title(company)
+    # data extraction
+    date_data = [data["date"] for data in stock_data]
+    high_data = [data["high"] for data in stock_data]
+    low_data = [data["low"] for data in stock_data]
+    volume_data = [data["volume"] for data in stock_data]
+
+    plt.suptitle(company)
+
+    # price plot
+    fig = plt.figure(num=None, figsize=(8, 6), dpi=100)
+    ax = fig.add_subplot(2, 1, 1)
+    ax.plot(date_data, high_data, marker="s", label='high')
+    ax.plot(date_data, low_data, marker="o", label="low")
     plt.xlabel("Date")
-    plt.ylabel("Stock Price")
-    plt.scatter(dates, y_values)
+    plt.ylabel("Stock Price ($USD)")
+    plt.gca().invert_yaxis()
+    plt.legend(loc='upper left')
+    ax.xaxis.set_major_locator(plt.MaxNLocator(4))
+    ax.yaxis.set_major_locator(plt.MaxNLocator(4))
+
+    # volume plot
+    ax2 = fig.add_subplot(2, 1, 2)
+    ax2.plot(date_data, volume_data)
+    plt.xlabel("Date")
+    plt.ylabel("Volume")
+    plt.gca().invert_yaxis()
+    ax2.xaxis.set_major_locator(plt.MaxNLocator(4))
+    ax2.yaxis.set_major_locator(plt.MaxNLocator(4))
+
     plt.show()
