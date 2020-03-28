@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import datetime
 import databaseManager.Utilities as util
+import time
 
 class Scraper:
     """
@@ -30,6 +31,7 @@ class Scraper:
 
         @param symbol: The stock ticker for a given company
         @param interval: A tuple or array of date values in the format 'm-d-Y'. If None is provided, will
+                        default to the full available time range
         @param debug: A boolean flag whether to print debug statements or not
         @return: An array of dictionaries representing rows of data. Ex:
             [{'date': 'Mar 19, 2020', 'open': '137.38', 'high': '152.49', 'low': '130.85', 'close': '149.49', 'adj_close': '149.49', 'volume': '6,543,800'},
@@ -43,19 +45,15 @@ class Scraper:
 
         url = ""
 
-        if interval is None:
-            url = "https://finance.yahoo.com/quote/GS/history?p=" + symbol
-        else:
-            if interval[0] is None or interval[1] is None:
-                print("Invalid request! One of the intervals is None")
-                return
+        # convert date strings into epoch times
+        begin_date = 0 if interval is None else round(datetime.datetime.strptime(interval[0], '%m-%d-%Y').timestamp())
+        end_date = round(time.time()) if interval is None else round(datetime.datetime.strptime(interval[1], '%m-%d-%Y').timestamp())
 
-            # convert date strings into epoch times
-            begin_date = round(datetime.datetime.strptime(interval[0], '%m-%d-%Y').timestamp())
-            end_date = round(datetime.datetime.strptime(interval[1], '%m-%d-%Y').timestamp())
+        if debug:
+            print(end_date)
 
-            url = "https://finance.yahoo.com/quote/" + str(symbol) + "/history?period1=" + str(
-                begin_date) + "&period2=" + str(end_date) + "&interval=1d&filter=history&frequency=1d"
+        url = "https://finance.yahoo.com/quote/" + str(symbol) + "/history?period1=" + str(
+            begin_date) + "&period2=" + str(end_date) + "&interval=1d&filter=history&frequency=1d"
 
         if debug:
             print("Querying URL: " + url)
@@ -91,11 +89,12 @@ class Scraper:
 
         :param symbol: The stock ticker for a given company
         :param interval: A tuple or array of date values in the format 'm-d-Y'.
+        if None, it updates all available data for the stock
         :param database_path: rel path of database
         :param table_name: name of table in which we will input data
         :param debug: A boolean flag whether to print debug statements or not
         """
-        stock_data = Scraper.scrape(symbol, interval)
+        stock_data = Scraper.scrape(symbol, interval, debug)
 
         if debug:
             print(stock_data)
@@ -140,4 +139,4 @@ DATABASE_URL = "../../database/stocksInfo.db"
 # data = Scraper.scrape("GS", ["2-17-2005", "3-20-2020"], True)
 # print(data)
 
-Scraper.update_symbol("GS", ["2-17-2005", "3-20-2020"], DATABASE_URL, "test_scraper_GS_01", False)
+Scraper.update_symbol("GS", None, DATABASE_URL, "test_scraper_GS_01_all_data", True)
