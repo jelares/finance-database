@@ -136,7 +136,6 @@ class Scraper:
 
             util.data_entry(table_name, values, table_data, database_path, debug)
 
-<<<<<<< HEAD
 
 # Testing Methods for scraper:
 
@@ -146,7 +145,4 @@ DATABASE_URL = "../../database/stocksInfo.db"
 # print(data)
 
 Scraper.update_symbol("GS", None, DATABASE_URL, "test_scraper_GS_01_all_data", True)
-=======
-        if debug:
-            print("Update success!")
->>>>>>> 927485e689c55c279c185ba4c896f3653a04f04c
+
