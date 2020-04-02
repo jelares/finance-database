@@ -1,6 +1,27 @@
+import sys
+sys.path.append('../')
 import requests
 import csv
 from tkinter import *
+import datetime
+import time
+import databaseManager.Utilities as util
+
+
+'''
+Standalone script to update database with certain stock
+'''
+
+DATABASE_URL = "data/stockInfo.db"
+
+
+def isBlank(string):
+    if string and string.strip():
+        # myString is not None AND myString is not empty or blank
+        return False
+    # myString is None OR myString is empty or blank
+    return True
+
 
 # GUI
 class Window(Frame):
@@ -42,24 +63,46 @@ class Window(Frame):
         self.progressLabel = Label(submitFrame, text="Progress Label")
         self.progressLabel.pack(side=RIGHT)
 
+
     def submit(self):
         self.progressLabel["text"] = "Stock updating..."
+        url = "https://query1.finance.yahoo.com/v7/finance/download/"
 
-        print(self.symbol.get())
+        begin_date = 0 if isBlank(self.startDate.get()) else round(
+            datetime.datetime.strptime(self.startDate.get().strip(), '%m-%d-%Y').timestamp())
+        end_date = round(time.time()) if isBlank(self.endDate.get()) else round(
+            datetime.datetime.strptime(self.endDate.get().strip(), '%m-%d-%Y').timestamp())
 
+        # build url
+        url += str(self.symbol.get().strip()) + "?period1=" + str(begin_date) + "&period2=" + str(
+            end_date) + "&interval=1d&events=history"
+
+        # send request
+        r = requests.get(url)  # create HTTP response object
+        decoded_content = r.content.decode('utf-8')
+        cr = csv.reader(decoded_content.splitlines(), delimiter=',')
+        data = list(cr)[1:]     # first line is header
+
+        columns = {'Timestamp': "REAL",
+                   'Open': "REAL",
+                   'High': "REAL",
+                   'Low': "REAL",
+                   'Close': "REAL",
+                   'Adj_Close': "REAL",
+                   'Volume': "REAL"}
+
+        table_name = self.symbol.get().strip().upper()
+        util.create_table(table_name, list(columns.keys()), list(columns.items()), DATABASE_URL, True)
+
+        for row in data:
+            row_entry = [str(el) for el in row]
+            row_entry[0] = str(datetime.datetime.strptime(row[0], '%Y-%m-%d').timestamp())   # change to unix timestamp
+            util.data_entry(table_name, row_entry, list(columns.items()), DATABASE_URL, True)
+
+        self.progressLabel["text"] = "Finished updating database!"
 
 
 root = Tk()
 root.geometry("400x300")
 app = Window(root)
 root.mainloop()
-
-# url = "https://query1.finance.yahoo.com/v7/finance/download/ABT?period1=1553930588&period2=1585552988&interval=1d" \
-#       "&events=history "
-#
-# r = requests.get(url) # create HTTP response object
-#
-# decoded_content = r.content.decode('utf-8')
-# cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-# for row in list(cr):
-#     print(row)
