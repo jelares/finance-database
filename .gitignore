@@ -5,3 +5,4 @@ database/
 *.pyc
 *.db
 __pycache__/
+*.joblib
